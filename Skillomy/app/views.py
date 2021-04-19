@@ -45,6 +45,7 @@ class ProfileView(View):
 		return render(request,'app/profile.html',{'form':form, 'active':'btn-secondary'})
 	def post(self,request):
 		form=CustomerProfileForm(request.POST)
+		reg=Customer.objects.get(user=request.user)
 		if form.is_valid():
 			usr=request.user
 			name=form.cleaned_data['name']
@@ -54,7 +55,15 @@ class ProfileView(View):
 			website=form.cleaned_data['website']
 			zipcode=form.cleaned_data['zipcode']
 			state=form.cleaned_data['state']
-			reg=Customer(user=usr,name=name,biography=biography,language=language,city=city,website=website,zipcode=zipcode,state=state)
+			#reg=Customer(user=usr,name=name,biography=biography,language=language,city=city,website=website,zipcode=zipcode,state=state)
+			reg.user=usr
+			reg.name=name
+			reg.biography=biography
+			reg.language=language
+			reg.city=city
+			reg.website=website
+			reg.zipcode=zipcode
+			reg.state=state
 			reg.save()
 			#messages.success(request,'Congratulations ! Registration Sucessful')
 			messages.success(request,'Profile updated')
