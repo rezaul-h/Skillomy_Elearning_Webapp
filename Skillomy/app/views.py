@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
-from .forms import CustomerRegistrationForm
+from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
 
 class ProductView(View):
@@ -39,15 +39,34 @@ class CustomerRegistrationView(View):
 		return render(request,'app/customerregistration.html',{'form':form})
 
 
+class ProfileView(View):
+	def get(self,request):
+		form=CustomerProfileForm()
+		return render(request,'app/profile.html',{'form':form, 'active':'btn-secondary'})
+	def post(self,request):
+		form=CustomerProfileForm(request.POST)
+		if form.is_valid():
+			usr=request.user
+			name=form.cleaned_data['name']
+			biography=form.cleaned_data['biography']
+			language=form.cleaned_data['language']
+			city=form.cleaned_data['city']
+			website=form.cleaned_data['website']
+			zipcode=form.cleaned_data['zipcode']
+			state=form.cleaned_data['state']
+			reg=Customer(user=usr,name=name,biography=biography,language=language,city=city,website=website,zipcode=zipcode,state=state)
+			reg.save()
+			#messages.success(request,'Congratulations ! Registration Sucessful')
+			messages.success(request,'Profile updated')
+		return render(request,'app/profile.html',{'form':form,'active':'btn-secondary'})
+
+
 
 def add_to_cart(request):
  return render(request, 'app/addtocart.html')
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
-
-def profile(request):
- return render(request, 'app/profile.html')
 
 def address(request):
  return render(request, 'app/address.html')

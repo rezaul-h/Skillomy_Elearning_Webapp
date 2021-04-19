@@ -1,6 +1,12 @@
 from django.db import models
+from django.db.models import CharField
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator,MinValueValidator
+LANGUAGE_CHOICES=(
+	('English','English'),
+	('Bangla','Bangla')
+	)
+
 STATE_CHOICES=(
 	('Ghorashal','Ghorashal'),
 	('Monohardi','Monohardi'),
@@ -18,9 +24,13 @@ STATE_CHOICES=(
 class Customer(models.Model):
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
 	name=models.CharField(max_length=50)
+	biography=CharField(max_length=100,default="N/A")
+	language=CharField(choices=LANGUAGE_CHOICES,max_length=7,default="N/A")
 	city=models.CharField(max_length=20)
+	website=models.CharField(max_length=20,default="N/A")
 	zipcode=models.IntegerField()
 	state=models.CharField(choices=STATE_CHOICES,max_length=50)
+
 
 	def __str__(self):
 		return str(self.id)

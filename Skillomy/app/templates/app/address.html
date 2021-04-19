@@ -1,41 +1,34 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Buy Now{% endblock title %}
+{% block title %}Profile{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
- <h3>Welcome Sonam</h3>
+  <h3>Welcome <span class="text-capitalize">{{request.user}}</span></h3>
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
-    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
-    <li class="d-grid"><a href="{% url 'address' %}" class="btn">Address</a></li>
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}} btn-secondary">Profile informations</a></li>
+    <li class="d-grid"><a href="{% url 'address' %}" class="btn">Add Profile Picture</a></li>
    </ul>
   </div>
-  <div class="col-sm-9 offset-sm-1">
-   <div class="row">
-    <div class="col-sm-6">
-     <div class="card">
-      <div class="card-body">
-       <h3>Address 1</h3>
-       <p>Name: Rezaul Haque</p>
-       <p>Address 1: Moghbazar</p>
-       <p>Address 2: Khilgaon</p>
-       <p>State: Dhaka</p>
-      </div>
-     </div>
+  <div class="col-sm-8 offset-sm-1">
+   <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% for fm in form %}
+    <div class="form-group col-lg-6 mb-3">
+      {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+      
     </div>
-    <div class="col-sm-6">
-     <div class="card">
-      <div class="card-body">
-       <h3>Address 2</h3>
-       <p>Name: Rezaul haque</p>
-       <p>Address 1: khilgaon</p>
-       <p>Address 2: mohanagar</p>
-       <p>State: dhaka</p>
-      </div>
-     </div>
+    {% endfor %}
+    <div class="col-12 mt-3">
+      <button type="submit" class="btn btn-primary mb-3" >Submit</button>
     </div>
-   </div>
+   </form>
+   {% if messages %}
+   {% for msg in messages %}
+   <p {% if msg.tags %} class="alert alert-{{msg.tags}} mb-5" {% endif %} > {{msg}}</p>
+   {% endfor %}
+   {% endif %}
   </div>
  </div>
 </div>

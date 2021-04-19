@@ -8,7 +8,7 @@ from .models import(
 # Register your models here.
 @admin.register(Customer)
 class CustomerModelAdmin(admin.ModelAdmin):
-	list_display=['id','user','name','city','zipcode','state']
+	list_display=['id','user','name','biography','language','city','website','zipcode','state']
 
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
