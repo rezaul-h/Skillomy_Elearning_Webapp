@@ -23,13 +23,13 @@ STATE_CHOICES=(
 	)
 class Customer(models.Model):
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
-	name=models.CharField(max_length=50, default="name")
+	name=models.CharField(max_length=50, default="root")
 	biography=CharField(max_length=100,default="N/A")
-	language=CharField(choices=LANGUAGE_CHOICES,max_length=7,default="N/A")
-	city=models.CharField(max_length=20,default="city")
+	language=CharField(choices=LANGUAGE_CHOICES,max_length=7,default="English")
+	city=models.CharField(max_length=20,default="Dhaka")
 	website=models.CharField(max_length=20,default="N/A")
 	zipcode=models.IntegerField(default="zipcode")
-	state=models.CharField(choices=STATE_CHOICES,max_length=50,default="state")
+	state=models.CharField(choices=STATE_CHOICES,max_length=50,default="Dhaka")
 
 
 	def __str__(self):

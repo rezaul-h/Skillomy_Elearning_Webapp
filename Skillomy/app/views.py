@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
 from .forms import CustomerRegistrationForm, CustomerProfileForm
@@ -15,10 +15,10 @@ class ProductView(View):
 		'MachineLearning':MachineLearning,
 		'DataScience':DataScience,
 		'DeepLearning':DeepLearning
-		
+
 		}
 		return render(request,'app/home.html',context)
-		
+
 
 class ProductDetailView(View):
 	def get(self,request,pk):
@@ -72,7 +72,33 @@ class ProfileView(View):
 
 
 def add_to_cart(request):
- return render(request, 'app/addtocart.html')
+	user=request.user
+	course_id=request.GET.get('course_id',None)
+	course=Product.objects.get(id=course_id)
+	Cart(user=user,course=course).save()
+	return redirect('/cart')
+
+def show_cart(request):
+	if request.user.is_authenticated:
+		user=request.user
+		cart=Cart.objects.filter(user=user)
+		total_actual=0.0
+		total_ammount=0.0
+		discount=0.0
+		total_discount=0.0
+		cart_product=[p for p in Cart.objects.all() if p.user==user]
+		if cart_product:
+			for p in cart_product:
+				actual=p.quantity*p.course.selling_price
+				total_actual+=actual
+				discount=(p.course.selling_price - p.course.discounted_price)
+				total_discount+=discount
+				tempammount=(p.quantity * p.course.discounted_price)
+				total_ammount+=tempammount
+			context={'carts':cart, 'total_ammount':total_ammount,'total_discount':total_discount,'total_actual':total_actual}
+			return render(request, 'app/addtocart.html',context)
+		else:
+			return render(request, 'app/emptycart.html')
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
@@ -88,7 +114,7 @@ def mobile(request,data=None):
 		mobiles=Product.objects.filter(category='M')
 	elif data=='Redmi' or data=='Samsung':
 		mobiles=Product.objects.filter(category='M').filter(brand=data)
-		
+
 	return render(request,'app/mobile.html',{'mobiles':mobiles})
 
 
