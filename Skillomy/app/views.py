@@ -144,4 +144,14 @@ def mobile(request,data=None):
 
 
 def checkout(request):
- return render(request, 'app/checkout.html')
+	user=request.user
+	address=Customer.objects.filter(user=user)
+	cart_item=Cart.objects.filter(user=user)
+	ammount=0.0
+	total_ammount=0.0
+	cart_product=[p for p in Cart.objects.all() if p.user==request.user]
+	if cart_product:
+		for p in cart_product:
+			tempammount=(p.quantity * p.course.discounted_price)
+			total_ammount+=tempammount
+	return render(request, 'app/checkout.html',{'address':address,'total_ammount':total_ammount,'cart_item':cart_item})

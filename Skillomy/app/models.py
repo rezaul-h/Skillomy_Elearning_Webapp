@@ -60,6 +60,11 @@ class Cart(models.Model):
 
 	def __str__(self):
 		return str(self.id)
+	
+	@property
+	def total_cost(self):
+		return self.course.discounted_price
+	
 
 STATUS_CHOICES=(
 	('Accepted','Accepted'),
