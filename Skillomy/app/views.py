@@ -3,6 +3,8 @@ from django.views import View
 from .models import Customer, Product, Cart, OrderPlaced
 from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
+from django.http import JsonResponse
+from django.db.models import Q
 
 class ProductView(View):
 	def get(self,request):
@@ -99,6 +101,29 @@ def show_cart(request):
 			return render(request, 'app/addtocart.html',context)
 		else:
 			return render(request, 'app/emptycart.html')
+
+
+def remove_cart(request):
+	if request.method=='GET':
+		prod_id=request.GET['prod_id']
+		c=Cart.objects.get(Q(course=prod_id)&Q(user=request.user))
+		c.delete()
+		total_actual=0.0
+		total_ammount=0.0
+		discount=0.0
+		total_discount=0.0
+		cart_product=[p for p in Cart.objects.all() if p.user==request.user]
+		for p in cart_product:
+			actual=p.quantity * p.course.selling_price
+			total_actual+=actual
+			discount=(p.course.selling_price - p.course.discounted_price)
+			total_discount+=discount
+			tempammount=(p.quantity * p.course.discounted_price)
+			total_ammount+=tempammount
+		data={'total_ammount':total_ammount,'total_discount':total_discount,'total_actual':total_actual}	
+		return JsonResponse(data)
+
+
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
