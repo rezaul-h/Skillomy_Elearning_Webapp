@@ -4,7 +4,21 @@ from .models import Customer, Product, Cart, OrderPlaced
 from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
 from django.http import JsonResponse
+#from example.config import pagination
 from django.db.models import Q
+
+def Search(request):
+	
+	query=request.GET["query"]
+	results=Product.objects.filter(Q(title__icontains=query)|Q(description__icontains=query))
+	context={
+	'results':results
+	}
+	return render(request,'app/search.html',context)
+
+
+	
+
 
 class ProductView(View):
 	def get(self,request):
