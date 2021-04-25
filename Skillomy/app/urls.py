@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_view
 from .forms import LoginForm,MyPasswordChangeForm,MyPasswordResetForm,MySetPasswordForm,CustomerProfileForm
 urlpatterns = [
     path('', views.ProductView.as_view(),name='home'),
+    path('courses/',views.Allcourse,name='courses'),
     path('search/',views.Search,name='search_result'),
     path('product-detail/<int:pk>', views.ProductDetailView.as_view(), name='product-detail'),
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),

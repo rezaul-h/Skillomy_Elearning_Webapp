@@ -35,6 +35,7 @@ class Customer(models.Model):
 	def __str__(self):
 		return str(self.id)
 
+
 CATEGORY_CHOICES=(
 	('Py', 'python'),
 	('DS', 'Data Science'),

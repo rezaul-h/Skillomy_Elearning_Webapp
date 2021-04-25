@@ -7,16 +7,9 @@ from django.http import JsonResponse
 #from example.config import pagination
 from django.db.models import Q
 
-def Search(request):
-	
-	query=request.GET["query"]
-	results=Product.objects.filter(Q(title__icontains=query)|Q(description__icontains=query))
-	context={
-	'results':results
-	}
-	return render(request,'app/search.html',context)
-
-
+def Allcourse(request):
+	results=Product.objects.all()
+	return render(request,'app/allproducts.html',{'results':results})
 	
 
 
@@ -137,6 +130,11 @@ def remove_cart(request):
 		data={'total_ammount':total_ammount,'total_discount':total_discount,'total_actual':total_actual}	
 		return JsonResponse(data)
 
+def Search(request):
+	query=request.GET["query"]
+	results=Product.objects.filter(Q(title__icontains=query)|Q(description__icontains=query))
+	return render(request,'app/search.html',{'results':results})
+	
 
 
 def buy_now(request):
