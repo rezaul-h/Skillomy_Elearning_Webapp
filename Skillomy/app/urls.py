@@ -7,6 +7,8 @@ from .forms import LoginForm,MyPasswordChangeForm,MyPasswordResetForm,MySetPassw
 urlpatterns = [
     path('', views.ProductView.as_view(),name='home'),
     path('courses/',views.Allcourse,name='courses'),
+    path('create_course/',views.HomeView.as_view(),name='create-course'), 
+    path('add_post/',views.AddCourseView.as_view(),name='add-course'), 
     path('search/',views.Search,name='search_result'),
     path('product-detail/<int:pk>', views.ProductDetailView.as_view(), name='product-detail'),
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
@@ -28,6 +30,7 @@ urlpatterns = [
     path('password_reset_complete',auth_view.PasswordResetCompleteView.as_view(template_name='app/password_reset_complete.html'),name='password_reset_complete'),
     path('accounts/login/', auth_view.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
     path('registration/', views.CustomerRegistrationView.as_view(), name='customerregistration'),
+    path('teacher-registration/', views.TeacherRegistrationView.as_view(), name='teacher-registration'),
     path('checkout/', views.checkout, name='checkout'),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

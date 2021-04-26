@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.views import View
-from .models import Customer, Product, Cart, OrderPlaced
-from .forms import CustomerRegistrationForm, CustomerProfileForm
+from django.views.generic import ListView,DetailView,CreateView
+from .models import Customer, Product, Cart, OrderPlaced,Teacher
+from .forms import CustomerRegistrationForm, CustomerProfileForm,TeacherRegistrationForm
 from django.contrib import messages
 from django.http import JsonResponse
 #from example.config import pagination
@@ -10,7 +11,15 @@ from django.db.models import Q
 def Allcourse(request):
 	results=Product.objects.all()
 	return render(request,'app/allproducts.html',{'results':results})
-	
+
+class HomeView(ListView):
+	model=Product
+	template_name='app/create_course.html'
+
+class AddCourseView(CreateView):
+	model=Product
+	template_name='app/course_add.html'
+	fields=['id','title','selling_price','discounted_price','description','level','category']
 
 
 class ProductView(View):
@@ -47,6 +56,16 @@ class CustomerRegistrationView(View):
 			form.save()
 		return render(request,'app/customerregistration.html',{'form':form})
 
+class TeacherRegistrationView(View):
+	def get(self, request):
+		form=TeacherRegistrationForm()
+		return render(request,'app/teacherregistration.html',{'form':form})
+	def post(self,request):
+		form=TeacherRegistrationForm(request.POST)
+		if form.is_valid():
+			messages.success(request,'Congratulations ! Registration Sucessful')
+			form.save()
+		return render(request,'app/teacherregistration.html',{'form':form})
 
 class ProfileView(View):
 	def get(self,request):
@@ -167,3 +186,10 @@ def checkout(request):
 			tempammount=(p.quantity * p.course.discounted_price)
 			total_ammount+=tempammount
 	return render(request, 'app/checkout.html',{'address':address,'total_ammount':total_ammount,'cart_item':cart_item})
+
+
+
+
+
+#def Create_course(request):
+#	return render(request, 'app/create_course.html')

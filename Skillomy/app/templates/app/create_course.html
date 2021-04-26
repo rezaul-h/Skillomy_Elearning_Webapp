@@ -1,0 +1,47 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Create{% endblock title %}
+{% block main-content %}
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+      <h2>All Couses</h2>
+      
+        <div class="col-md-10">
+            {% for product in object_list %}
+            {% if product.product_image %}
+            <div class="row p-2 bg-white border rounded">
+              <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="{{product.product_image.url}}" alt="image"></div>
+              {% else %}
+              <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="{{product.product_image.url}}" alt="image"></div>
+              {% endif %}
+                <div class="col-md-6 mt-1">
+                    <h5>{{product.title}}</h5>
+                    <div class="d-flex flex-row">
+                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>310</span>
+                    </div>
+                    <!--<div class="mt-1 mb-1 spec-1"><span>100% cotton</span><span class="dot"></span><span>Light weight</span><span class="dot"></span><span>Best finish<br></span></div>-->
+                    <!--<div class="mt-1 mb-1 spec-1"><span>{{result.category}}</span><span class="dot"></span><span>For Beginner</span><span class="dot"></span></div>
+                    <p class="text-justify text-truncate para mb-0">{{result.description}} <br><br></p>
+                </div>-->
+
+                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                    <div class="d-flex flex-row align-items-center">
+                        <h4 class="mr-1">{{product.discounted_price}}</h4><span class="strike-text">{{product.selling_price}}</span>
+                    </div>
+
+
+               
+                    <div class="d-flex flex-column mt-4"><a class="btn btn-primary btn-sm" href="{% url 'product-detail' product.id %}">Details</a>
+
+                      
+
+                     
+                   </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="{% url 'add-course' %}">Add Course</a>
+</div>
+{% endblock main-content%}

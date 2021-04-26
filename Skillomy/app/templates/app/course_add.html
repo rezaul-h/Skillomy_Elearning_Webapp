@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Add a course{% endblock title %}
+{% block main-content %}
+<h1>Add Course</h1>
+<br>
+<br>
+<form method="POST">
+	{% csrf_token %}
+	{{form.as_p}}
+	<button class="btn btn-primary">Submit</button>
+	
+</form>
+
+{% endblock main-content%}

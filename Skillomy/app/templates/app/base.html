@@ -2,7 +2,6 @@
 {% load static %}
 
 <html lang="en">
-  
   <head>
 
     <!-- Required meta tags -->
@@ -58,7 +57,10 @@
                Teach on Skillomy
              </a>
              <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
-               <li><a class="dropdown-item" href="#">Signup for teaching</a></li>
+               <li><a class="dropdown-item" href="{% url 'create-course' %}">Create Course</a></li>
+             </ul>
+             <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+               <li><a class="dropdown-item" href="{% url 'teacher-registration' %}">Signup for teaching</a></li>
              </ul>
            </li>
          </ul>
