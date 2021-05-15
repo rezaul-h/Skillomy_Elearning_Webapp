@@ -17,7 +17,7 @@ EXPERIENCE_CHOICES=(
 	('Proffesional ', 'Proffesional'),
 	('Taught before casually', 'Taught before casually'),
 	('Never Taught', 'Never Taught'),
-	)
+	) 
 
 TIME_CHOICES=(
 	('I am very busy at the time (0-2 hours)', 'I am very busy at the time (0-2 hours)'),
@@ -79,6 +79,19 @@ class Teacher(models.Model):
 	city=models.CharField(max_length=20,default="Dhaka")
 	website=models.CharField(max_length=20,default="N/A")
 	
+class Categories(models.Model):
+	name=models.CharField(max_length=255,default='none')
+
+	def __str__(self):
+		return self.name
+
+class Content(models.Model):
+	category_name=models.ForeignKey(Categories,on_delete=models.CASCADE)
+	slides=models.FileField(upload_to='slides',blank=True, null=True)
+	lectures=models.FileField(upload_to='lectures',blank=True, null=True)
+
+	def __str__(self):
+		return str(self.id)
 
 
 class Product(models.Model):
@@ -88,7 +101,9 @@ class Product(models.Model):
 	description=models.CharField(max_length=200)
 	level=models.CharField(choices=LEVEL_CHOICES, max_length=20, default="Not sure")
 	#brand=models.CharField(max_length=50)
-	category=models.CharField(choices=CATEGORY_CHOICES, max_length=2,default=None)
+	category=models.CharField(choices=CATEGORY_CHOICES,max_length=2)
+	category_id=models.ForeignKey(Categories,on_delete=models.CASCADE,default='coding')
+	content=models.ForeignKey(Content,on_delete=models.CASCADE,default='none')	
 	product_image=models.ImageField(upload_to='productimg',blank=True, null=True)
 
 	def __str__(self):
@@ -96,6 +111,8 @@ class Product(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('create-course')
+
+
 
 class Cart(models.Model):
 	user=models.ForeignKey(User, on_delete=models.CASCADE)

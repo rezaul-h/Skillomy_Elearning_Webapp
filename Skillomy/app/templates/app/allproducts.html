@@ -2,7 +2,7 @@
 
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Cousest{% endblock title %}
+{% block title %}All Course{% endblock title %}
 {% block main-content %}
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-center row">
@@ -18,9 +18,9 @@
               {% endif %}
                 <div class="col-md-6 mt-1">
                     <h5>{{result.title}}</h5>
-                    <div class="d-flex flex-row">
-                        <div class="ratings mr-2"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><span>310</span>
-                    </div>
+                    <p style="width: 50ch;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"> {{result.description}} </p>
+                    <p>{{result.category}}</p>
+
                     <!--<div class="mt-1 mb-1 spec-1"><span>100% cotton</span><span class="dot"></span><span>Light weight</span><span class="dot"></span><span>Best finish<br></span></div>-->
                     <!--<div class="mt-1 mb-1 spec-1"><span>{{result.category}}</span><span class="dot"></span><span>For Beginner</span><span class="dot"></span></div>
                     <p class="text-justify text-truncate para mb-0">{{result.description}} <br><br></p>
@@ -28,11 +28,11 @@
 
                 <div class="align-items-center align-content-center col-md-3 border-left mt-1">
                     <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">{{result.discounted_price}}</h4><span class="strike-text">{{result.selling_price}}</span>
+                       <h4 class="mr-1">{{result.discounted_price}}Bdt </h4><span class="strike-text">{{result.selling_price}}Bdt </span> 
                     </div>
 
                
-                    <div class="d-flex flex-column mt-4"><a class="btn btn-primary btn-sm" href="{% url 'product-detail' result.id %}">Details</a>
+                    <div class="d-flex flex-column mt-4"><a class="btn btn-primary btn-sm" href="{% url 'product-detail' result.id %}">Details</a><br>
 
                       
 
@@ -40,6 +40,7 @@
                    </div>
                 </div>
             </div>
+
             {% endfor %}
         </div>
     </div>

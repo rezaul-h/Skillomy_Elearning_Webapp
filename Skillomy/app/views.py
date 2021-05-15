@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect
 from django.views import View
 from django.views.generic import ListView,DetailView,CreateView
-from .models import Customer, Product, Cart, OrderPlaced,Teacher
+from .models import Customer, Product, Cart, OrderPlaced,Teacher,Categories
 from .forms import CustomerRegistrationForm, CustomerProfileForm,TeacherRegistrationForm
 from django.contrib import messages
 from django.http import JsonResponse
 #from example.config import pagination
 from django.db.models import Q
+import joblib
 
 def Allcourse(request):
 	results=Product.objects.all()
@@ -163,8 +164,29 @@ def address(request):
  return render(request, 'app/address.html')
 
 def orders(request):
- return render(request, 'app/orders.html')
+	op=OrderPlaced.objects.filter(user=request.user)
+	return render(request, 'app/orders.html',{'op':op})
 
+class QCheckFormView(View):
+	def get(self,request):
+		category=Categories.objects.all()
+		return render(request,'app/qcheckform.html',{'category':category})
+
+def prediction(request):
+	classification=joblib.load("trainning.sav")
+	list=[]
+	list.append(request.GET['q1'])
+	##list.append(request.GET['q2'])
+	list.append(request.GET['q3'])
+	list.append(request.GET['q4'])
+	list.append(request.GET['q5'])
+	list.append(request.GET['level'])
+	
+	ans=classification.predict([list])
+	return render(request,'app/prediction.html',{'ans':ans})
+
+
+		
 def mobile(request,data=None):
 	if data==None:
 		mobiles=Product.objects.filter(category='M')
@@ -187,6 +209,16 @@ def checkout(request):
 			total_ammount+=tempammount
 	return render(request, 'app/checkout.html',{'address':address,'total_ammount':total_ammount,'cart_item':cart_item})
 
+
+def payment_done(request):
+	user=request.user
+	custid=request.GET.get('custid')
+	customer=Customer.objects.get(id=custid)
+	cart=Cart.objects.filter(user=user)
+	for c in cart:
+		OrderPlaced(user=user,customer=customer,course=c.course,quantity=c.quantity).save()
+		c.delete()
+	return redirect("orders")
 
 
 

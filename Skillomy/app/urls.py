@@ -16,10 +16,14 @@ urlpatterns = [
     path('removecart/',views.remove_cart),
     path('buy/', views.buy_now, name='buy-now'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('qcheckform/', views.QCheckFormView.as_view(), name='qcheckform'),
+    path('prediction/', views.prediction, name='prediction'),
     path('address/', views.address, name='address'),
     path('orders/', views.orders, name='orders'),
     path('mobile/', views.mobile, name='mobile'),
     path('mobile/<slug:data>', views.mobile, name='mobiledata'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('paymentdone/', views.payment_done, name='paymentdone'),
     path('login/', auth_view.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
     path('logout/',auth_view.LogoutView.as_view(next_page='login'),name='logout'),
     path('passwordchange/',auth_view.PasswordChangeView.as_view(template_name='app/passwordchange.html',form_class=MyPasswordChangeForm, success_url='/passwordchangedone/'),name='passwordchange'),
@@ -31,7 +35,7 @@ urlpatterns = [
     path('accounts/login/', auth_view.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name='login'),
     path('registration/', views.CustomerRegistrationView.as_view(), name='customerregistration'),
     path('teacher-registration/', views.TeacherRegistrationView.as_view(), name='teacher-registration'),
-    path('checkout/', views.checkout, name='checkout'),
+    
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 

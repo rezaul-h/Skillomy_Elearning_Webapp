@@ -1,21 +1,44 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Buy Now{% endblock title %}
+{% block title %}Placed Orders{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
- <h3>Welcome Sonam</h3>
+ <h3>Welcome {{request.user}}</h3>
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
     <li class="d-grid"><a href="{% url 'orders' %}" class="btn btn-primary">Orders</a></li>
    </ul>
   </div>
   <div class="col-sm-9 offset-sm-1">
-   <div class="row">
-    <div class="col-sm-6">Order 1</div>
-    <div class="col-sm-6">Order 2</div>
+    {% for o in op %}
+   <div class="row shadow-sm mb-3">
+    <div class="col-sm-2">
+      <img src="{{o.course.product_image.url}}" alt="" srcset="" class="img-fluid" height="150" width="150" >
+    </div>
+    <div class="col-sm-7">
+      <p>Course: {{o.course.title}} </p>
+      <p>price: {{o.course.discounted_price}} </p>
+    <div class="col-sm-3 fw-bold">
+      <p>Order.Status:{{o.status}}</p>
+      {% if o.status == 'Accepted' %}
+    <div class="progress">
+      <div class="progress-bar bg-success" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+      </div>
+      {% endif %}
+
+      {% if o.status == 'Rejected' %}
+    <div class="progress">
+      <div class="progress-bar bg-warning" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      </div>
+      {% endif %}
+      
+    </div>
+     
    </div>
   </div>
+  {% endfor %}
  </div>
+</div>
 </div>
 {% endblock main-content %}

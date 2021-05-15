@@ -2,9 +2,11 @@ from django.contrib import admin
 from .models import(
 	Customer,
 	Product,
+	Categories,
 	Cart,
 	OrderPlaced,
-	Teacher
+	Teacher,
+	Content
 	)  
 # Register your models here.
 @admin.register(Customer)
@@ -18,7 +20,15 @@ class TeacherModelAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
-	list_display=['id','title','selling_price','discounted_price','description','level','category','product_image']
+	list_display=['id','title','selling_price','discounted_price','description','level','category_id','content','product_image']
+
+@admin.register(Categories)
+class CateogriesModelAdmin(admin.ModelAdmin):
+	list_display=['id','name']
+
+@admin.register(Content)
+class ContentModelAdmin(admin.ModelAdmin):
+	list_display=['id','category_name','slides','lectures']
 
 @admin.register(Cart)
 class CartModelAdmin(admin.ModelAdmin):

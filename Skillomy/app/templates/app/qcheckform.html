@@ -1,0 +1,77 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Quality Check Form{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+  
+  <div class="col-sm-12 offset-sm-1">
+      <form action="{% url 'prediction' %}">
+        
+          <div class="form-group col-lg-6 mb-3">
+              <label>Did you any courses from us ? 
+            <p>  1: Yes , 0: No</p>  </label>
+              <select name="q1" id="q1" class="form-control">
+                  <option>1</option>
+                  <option>0</option>
+              </select>
+
+          </div>
+
+          <div class="form-group col-lg-6 mb-3">
+              <label>After completion of the course what you think about yourself ?
+              <p> 0: Beginner , 1: Some Knowledge, 2: Expert </p>
+            </label>
+              <select name="q3" id="q3" class="form-control">
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+              </select>
+
+          </div>
+          <div class="form-group col-lg-6 mb-3">
+              <label>Did you implemented any project or papers on this field ? 
+             <p> 1: Yes , 0: No </p>
+            </label>
+              <select name="q4" id="q4" class="form-control">
+                  <option>1</option>
+                  <option>0</option>
+              </select>
+
+          </div>
+          <div class="form-group col-lg-6 mb-3">
+              <label>How much time did you spent on this field ?</label>
+              <select name="q5" id="q5" class="form-control">
+                  <option>0</option>
+                  <option>5</option>
+                  <option>10</option>
+                  <option>15</option>
+                  <option>20</option>
+              </select>
+
+          </div>
+          <div class="form-group col-lg-6 mb-3">
+              <label>What level of course you want to learn?
+                <p>0: Beginner , 1: Advanced, 2: Intermediate, 3: Expert</p> </label>
+              <select name="level" id="level" class="form-control">
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+              </select>
+
+          </div>
+
+          <div class="col-12 mt-3">
+              <button type="submit" class="btn btn-primary mb-3">Submit</button>
+          </div>
+      </form>
+   {% if messages %}
+   {% for msg in messages %}
+   <p {% if msg.tags %} class="alert alert-{{msg.tags}} mb-5" {% endif %} > {{msg}}</p>
+   {% endfor %}
+   {% endif %}
+  </div>
+ </div>
+</div>
+{% endblock main-content %}

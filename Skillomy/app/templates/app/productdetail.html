@@ -8,14 +8,19 @@
       <img src="{{course.product_image.url}}" alt="" class="img-fluid img-thumbnail">
     </div>
     <div class="col-sm-5 offset-sm-1">
-      <h2>Course Title: {{course.title}} </h2>
+      <h2>{{course.title}} </h2>
       <hr>
+
       <p>{{course.description}} </p> <br>
       <h4>{{course.discounted_price}} <small class="fw-light text-decoration-line-through">{{course.selling_price}}</small></h4> <br>
+      
       <form class="d-inline" action="/add-to-cart">
         <input type="hidden" name="course_id" value={{course.id}} id="course_id">
         <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to cart</button>
       </form>
+
+    
+
 
       <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
       <h5 class="mt-5">Available Offers</h5>
