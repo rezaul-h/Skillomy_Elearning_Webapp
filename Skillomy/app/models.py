@@ -55,7 +55,7 @@ class Customer(models.Model):
 	language=CharField(choices=LANGUAGE_CHOICES,max_length=7,default="English")
 	city=models.CharField(max_length=20,default="Dhaka")
 	website=models.CharField(max_length=20,default="N/A")
-	zipcode=models.IntegerField(default="zipcode")
+	zipcode=models.IntegerField(default="0000")
 	state=models.CharField(choices=STATE_CHOICES,max_length=50,default="Dhaka")
 
 
@@ -138,7 +138,7 @@ class OrderPlaced(models.Model):
 	course=models.ForeignKey(Product,on_delete=models.CASCADE)
 	quantity=models.PositiveIntegerField(default=1)
 	ordered_date=models.DateTimeField(auto_now_add=True)
-	status=models.CharField(max_length=30,choices=STATUS_CHOICES,default='Pending')
+	status=models.CharField(max_length=30,choices=STATUS_CHOICES,default='Accepted')
 
 
 

@@ -7,7 +7,10 @@ from django.contrib import messages
 from django.http import JsonResponse
 #from example.config import pagination
 from django.db.models import Q
+from django.contrib.auth.models import Group
 import joblib
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 def Allcourse(request):
 	results=Product.objects.all()
@@ -17,6 +20,7 @@ class HomeView(ListView):
 	model=Product
 	template_name='app/create_course.html'
 
+@method_decorator(login_required,name='dispatch')
 class AddCourseView(CreateView):
 	model=Product
 	template_name='app/course_add.html'
@@ -42,7 +46,10 @@ class ProductView(View):
 class ProductDetailView(View):
 	def get(self,request,pk):
 		course=Product.objects.get(pk=pk)
-		context={'course':course}
+		item_already_in_cart=False
+		if request.user.is_authenticated:
+			item_already_in_cart=Cart.objects.filter(Q(course=course.id)&Q(user=request.user)).exists()
+		context={'course':course,'item_already_in_cart':item_already_in_cart}
 		return render (request, 'app/productdetail.html',context)
 
 
@@ -54,7 +61,13 @@ class CustomerRegistrationView(View):
 		form=CustomerRegistrationForm(request.POST)
 		if form.is_valid():
 			messages.success(request,'Congratulations ! Registration Sucessful')
-			form.save()
+			user = form.save()
+			group = Group.objects.get(name='student')
+
+			user.groups.add(group)
+			cust=Customer(user=user,name=user.username)
+			cust.save()
+
 		return render(request,'app/customerregistration.html',{'form':form})
 
 class TeacherRegistrationView(View):
@@ -65,9 +78,14 @@ class TeacherRegistrationView(View):
 		form=TeacherRegistrationForm(request.POST)
 		if form.is_valid():
 			messages.success(request,'Congratulations ! Registration Sucessful')
-			form.save()
+			group = Group.objects.get(name='teacher')
+			user.groups.add(group)
+			teach=Teacher(user=user,name=user.username)
+			teach.save()
+
 		return render(request,'app/teacherregistration.html',{'form':form})
 
+@method_decorator(login_required,name='dispatch')
 class ProfileView(View):
 	def get(self,request):
 		form=CustomerProfileForm()
@@ -99,7 +117,7 @@ class ProfileView(View):
 		return render(request,'app/profile.html',{'form':form,'active':'btn-secondary'})
 
 
-
+@login_required
 def add_to_cart(request):
 	user=request.user
 	course_id=request.GET.get('course_id',None)
@@ -107,6 +125,7 @@ def add_to_cart(request):
 	Cart(user=user,course=course).save()
 	return redirect('/cart')
 
+@login_required
 def show_cart(request):
 	if request.user.is_authenticated:
 		user=request.user
@@ -129,7 +148,7 @@ def show_cart(request):
 		else:
 			return render(request, 'app/emptycart.html')
 
-
+@login_required
 def remove_cart(request):
 	if request.method=='GET':
 		prod_id=request.GET['prod_id']
@@ -163,8 +182,10 @@ def buy_now(request):
 def address(request):
  return render(request, 'app/address.html')
 
+@login_required
 def orders(request):
 	op=OrderPlaced.objects.filter(user=request.user)
+
 	return render(request, 'app/orders.html',{'op':op})
 
 class QCheckFormView(View):
@@ -183,6 +204,14 @@ def prediction(request):
 	list.append(request.GET['level'])
 	
 	ans=classification.predict([list])
+	if ans==[0]:
+		ans="bigenner"
+	elif ans==[1]:
+		ans="advanced"
+	elif ans==[2]:
+		ans="Intermediate"
+	elif ans==[3]:
+		ans="Expert"	
 	return render(request,'app/prediction.html',{'ans':ans})
 
 
@@ -195,7 +224,7 @@ def mobile(request,data=None):
 
 	return render(request,'app/mobile.html',{'mobiles':mobiles})
 
-
+@login_required
 def checkout(request):
 	user=request.user
 	address=Customer.objects.filter(user=user)
@@ -209,7 +238,7 @@ def checkout(request):
 			total_ammount+=tempammount
 	return render(request, 'app/checkout.html',{'address':address,'total_ammount':total_ammount,'cart_item':cart_item})
 
-
+@login_required
 def payment_done(request):
 	user=request.user
 	custid=request.GET.get('custid')
@@ -224,4 +253,4 @@ def payment_done(request):
 
 
 #def Create_course(request):
-#	return render(request, 'app/create_course.html')
+#	return render(request, 'app/create_course.html') 

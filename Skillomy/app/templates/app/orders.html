@@ -25,6 +25,7 @@
     <div class="progress">
       <div class="progress-bar bg-success" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
       </div>
+      
       {% endif %}
 
       {% if o.status == 'Rejected' %}
@@ -36,6 +37,8 @@
     </div>
      
    </div>
+   <p><a href="{{o.course.content.slides.url}}"> Download Slides </a></p>
+      <p><a href="{{o.course.content.lectures.url}}"> Download lectures</a></p>
   </div>
   {% endfor %}
  </div>

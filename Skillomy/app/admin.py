@@ -9,14 +9,14 @@ from .models import(
 	Content
 	)  
 # Register your models here.
-@admin.register(Customer)
-class CustomerModelAdmin(admin.ModelAdmin):
-	list_display=['id','user','name','biography','language','city','website','zipcode','state']
+#@admin.register(Customer)
+#class CustomerModelAdmin(admin.ModelAdmin):
+#	list_display=['id','user','name','biography','language','city','website','zipcode','state']
 
-@admin.register(Teacher)
-class TeacherModelAdmin(admin.ModelAdmin):
-	list_display=['id','user','name','university_name','category','experience','time_invest',
-	'biography','language','city','website']
+#@admin.register(Teacher)
+#class TeacherModelAdmin(admin.ModelAdmin):
+#	list_display=['id','user','name','university_name','category','experience','time_invest',
+#	'biography','language','city','website']
 
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
@@ -30,11 +30,11 @@ class CateogriesModelAdmin(admin.ModelAdmin):
 class ContentModelAdmin(admin.ModelAdmin):
 	list_display=['id','category_name','slides','lectures']
 
-@admin.register(Cart)
-class CartModelAdmin(admin.ModelAdmin):
-	list_display=['id','user','course','quantity']
+#@admin.register(Cart)
+#class CartModelAdmin(admin.ModelAdmin):
+#	list_display=['id','user','course','quantity']
 
-@admin.register(OrderPlaced)
-class OrderPlacedModelAdmin(admin.ModelAdmin):
-	list_display=['id','user','customer','course','quantity','ordered_date','status']
+#@admin.register(OrderPlaced)
+#class OrderPlacedModelAdmin(admin.ModelAdmin):
+#	list_display=['id','user','customer','course','quantity','ordered_date','status']
 

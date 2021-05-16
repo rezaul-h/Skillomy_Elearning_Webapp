@@ -1,11 +1,13 @@
 from django.urls import path
 from django.conf import settings
+from django.contrib import admin
 from django.conf.urls.static import static
 from app import views
 from django.contrib.auth import views as auth_view
 from .forms import LoginForm,MyPasswordChangeForm,MyPasswordResetForm,MySetPasswordForm,CustomerProfileForm
 urlpatterns = [
     path('', views.ProductView.as_view(),name='home'),
+    path('teacher/', admin.site.urls,name='teacher'),
     path('courses/',views.Allcourse,name='courses'),
     path('create_course/',views.HomeView.as_view(),name='create-course'), 
     path('add_post/',views.AddCourseView.as_view(),name='add-course'), 

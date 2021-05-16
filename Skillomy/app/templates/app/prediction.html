@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-	the result is {{ans}}
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Quality Check Form{% endblock title %}
+{% block main-content %}
 
-</body>
-</html>
+<div>
+	<h2 style="text-align: center; border-top: 20px; padding-top: 10%; padding-bottom:20% ">Congratulations you are on level {{ans}}</h2>
+	<h1>You are recommended to go for {{ans}} level course!!</h1>
+</div>
+{% endblock main-content %}
